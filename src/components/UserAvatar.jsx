@@ -29,7 +29,7 @@ export default function UserAvatar() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 40, height: 40 }} src="">
+            <Avatar sx={{ width: 40, height: 40 }} src={user.image}>
               M
             </Avatar>
           </IconButton>

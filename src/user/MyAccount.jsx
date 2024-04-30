@@ -27,7 +27,11 @@ export default function MyAccount() {
     <Card sx={{ width: "100%" }}>
       <CardContent>
         <Stack direction={"row"} spacing={2}>
-          <UploadImage setImage={handleImage} isPrpfile />
+          <UploadImage
+            image={formData.image}
+            setImage={handleImage}
+            isPrpfile
+          />
 
           <Stack justifyContent={"center"}>
             <Typography gutterBottom variant="h5" component="div">

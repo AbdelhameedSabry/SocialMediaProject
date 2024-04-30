@@ -40,6 +40,7 @@ export default function useMyAccount() {
             bio: user.bio,
             role: user.role,
             isActive: user.isActive,
+            image: user.profilePicture,
           });
         })
         .catch((e) => {

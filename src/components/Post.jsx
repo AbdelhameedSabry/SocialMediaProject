@@ -14,8 +14,8 @@ import {
   Skeleton,
 } from "@mui/material";
 import formatDate from "../helpers/formatDate";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import NorthIcon from "@mui/icons-material/North";
+import SouthIcon from "@mui/icons-material/South";
 
 const Post = ({ handleOpen, post, savePost, onLike, onDisLike }) => {
   const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -26,11 +26,16 @@ const Post = ({ handleOpen, post, savePost, onLike, onDisLike }) => {
       fontSize: "16px",
     },
   }));
+
   return (
     <Card sx={{ margin: 5 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: "red" }} aria-label="recipe" src={post.image}>
+          <Avatar
+            sx={{ bgcolor: "red" }}
+            aria-label="recipe"
+            src={post.user.profilePicture || ""}
+          >
             M
           </Avatar>
         }
@@ -71,46 +76,37 @@ const Post = ({ handleOpen, post, savePost, onLike, onDisLike }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="likes" onClick={() => onLike(post.id)}>
-          <Stack
-            sx={{
-              px: 2,
-              py: 1,
-              borderRadius: 20,
-              background: "#372c2c8a",
-              width: "50px",
+        <Stack
+          sx={{
+            pr: 6,
+            borderRadius: 20,
+            background: "#372c2c8a",
+            width: "50px",
+            alignItems: "center",
+          }}
+          spacing={1}
+          direction={"row"}
+        >
+          <IconButton aria-label="likes" onClick={() => onLike(post.id)}>
+            <NorthIcon />
+          </IconButton>
+          {(post?.ratings[0]?.likeCount || 0) -
+            (post?.ratings[0]?.disLikeCount || 0)}
+          <IconButton
+            aria-label="likes"
+            onClick={() => {
+              if (
+                (post?.ratings[0]?.likeCount || 0) -
+                  (post?.ratings[0]?.disLikeCount || 0) >
+                0
+              )
+                onDisLike(post.id);
             }}
-            spacing={1}
-            direction={"row"}
           >
-            <StyledBadge
-              badgeContent={post?.ratings[0]?.likeCount || 0}
-              max={99}
-            >
-              <ThumbUpOffAltIcon style={{ paddingRight: "25px" }} />
-            </StyledBadge>
-          </Stack>
-        </IconButton>
-        <IconButton aria-label="dislike" onClick={() => onDisLike(post.id)}>
-          <Stack
-            sx={{
-              px: 2,
-              py: 1,
-              borderRadius: 20,
-              background: "#372c2c8a",
-              width: "50px",
-            }}
-            spacing={1}
-            direction={"row"}
-          >
-            <StyledBadge
-              badgeContent={post?.ratings[0]?.disLikeCount || 0}
-              max={99}
-            >
-              <ThumbDownOffAltIcon style={{ paddingRight: "25px" }} />
-            </StyledBadge>
-          </Stack>
-        </IconButton>
+            <SouthIcon />
+          </IconButton>
+        </Stack>
+
         <IconButton
           aria-label="comment"
           onClick={() => handleOpen(post.id, true)}
@@ -122,11 +118,14 @@ const Post = ({ handleOpen, post, savePost, onLike, onDisLike }) => {
               borderRadius: 20,
               background: "#372c2c8a",
               width: "50px",
+              fontSize: "18px",
+              alignItems: "center",
+              justifyContent: "center",
             }}
+            direction={"row"}
           >
-            <StyledBadge badgeContent={post.comments.length || 0} max={100}>
-              <Comment />
-            </StyledBadge>
+            <Comment sx={{ mr: "10px" }} />
+            {post.comments.length || 0}
           </Stack>
         </IconButton>
         <IconButton aria-label="saved" onClick={() => savePost(post.id)}>

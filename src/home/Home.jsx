@@ -17,7 +17,7 @@ const Home = ({ profileValue }) => {
   const [openSnack, setOpenSnack] = useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState("error");
-  const { user } = useUser();
+  const { user, search } = useUser();
   const { sectionId, saved } = useParams();
 
   const handleOpenComment = (id, isOpen) => {
@@ -29,14 +29,14 @@ const Home = ({ profileValue }) => {
     (categoryId) => {
       setLoading(true);
       if (profileValue !== undefined) {
-        PostApi.GetCurrentUserPosts(profileValue)
+        PostApi.GetCurrentUserPosts(profileValue, search)
           .then((d) => {
             setPosts(d.data.data);
           })
           .catch((e) => {})
           .finally(() => setLoading(false));
       } else {
-        PostApi.GetAlltPosts(sectionId, categoryId, saved)
+        PostApi.GetAlltPosts(sectionId, categoryId, saved, search)
           .then((d) => {
             setPosts(d.data.data);
           })
@@ -44,7 +44,7 @@ const Home = ({ profileValue }) => {
           .finally(() => setLoading(false));
       }
     },
-    [profileValue, saved, sectionId]
+    [profileValue, saved, sectionId, search]
   );
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const Home = ({ profileValue }) => {
       .then((d) => {
         getAllPosts();
         setType("success");
-        setMessage("Post Liked Succefully");
+        setMessage("Post Rate up Succefully");
       })
       .catch((e) => {
         setType("error");
@@ -90,7 +90,7 @@ const Home = ({ profileValue }) => {
       .then((d) => {
         getAllPosts();
         setType("success");
-        setMessage("Post disliked Succefully");
+        setMessage("Post Rate down Succefully");
       })
       .catch((e) => {
         setType("error");

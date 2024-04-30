@@ -30,7 +30,7 @@ const Search = styled("div")(({ theme }) => ({
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, setSearch } = useUser();
 
   const registerButtons = (
     <Stack direction={"row"} spacing={2} alignItems={"center"}>
@@ -55,7 +55,7 @@ const Navbar = () => {
   );
 
   const searchFiled = (
-    <Search onChange={(e) => localStorage.setItem("search", e.target.value)}>
+    <Search onChange={(e) => setSearch(e.target.value)}>
       <Stack direction={"row"} p={0.3}>
         <SearchOutlinedIcon
           sx={{ rotate: "90deg" }}

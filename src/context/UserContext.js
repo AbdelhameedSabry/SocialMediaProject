@@ -8,19 +8,22 @@ export const useUser = () => {
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [search, setSearch] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const image = localStorage.getItem("image");
 
-    setUser({ ...user, token, role });
+    setUser({ ...user, token, role, image });
   }, []);
 
   const saveUserData = (userData) => {
     setUser({
       role: userData.user.roleId.toString(),
       token: userData.token,
+      image: userData.user.profilePicture,
     });
 
     localStorage.setItem("token", userData.token);
@@ -46,6 +49,8 @@ export const UserProvider = ({ children }) => {
     user,
     saveUserData,
     logOut,
+    search,
+    setSearch,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

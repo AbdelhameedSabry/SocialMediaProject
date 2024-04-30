@@ -2,11 +2,12 @@ import axios from "axios";
 import getApiBaseUrl from "../helpers/getApiBaseUrl";
 const baseUrl = getApiBaseUrl() + "posts/";
 
-function GetAlltPosts(sectionId, categoryId, saved) {
-  if (saved) return axios.get(baseUrl + "saved-posts");
+function GetAlltPosts(sectionId, categoryId, saved, search) {
+  if (saved)
+    return axios.get(baseUrl + "saved-posts", { params: { title: search } });
 
   return axios.get(baseUrl, {
-    params: { section: sectionId, category: categoryId },
+    params: { section: sectionId, category: categoryId, title: search },
   });
 }
 
@@ -43,10 +44,11 @@ function DisLikePost(id) {
   return axios.post(baseUrl + `dislike-post/${id}`);
 }
 
-function GetCurrentUserPosts(value) {
-  if (value === 0) return axios.get(baseUrl + "current-user");
+function GetCurrentUserPosts(value, search) {
+  if (value === 0)
+    return axios.get(baseUrl + "current-user", { params: { title: search } });
 
-  return axios.get(baseUrl + "saved-posts");
+  return axios.get(baseUrl + "saved-posts", { params: { title: search } });
 }
 
 const PostApi = {
