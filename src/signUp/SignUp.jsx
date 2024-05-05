@@ -1,6 +1,5 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -12,6 +11,7 @@ import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 import CustomAlert from "../components/CustomAlert";
 import useSignUp from "./useSignUp";
+import { Backdrop, Button, CircularProgress } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -38,6 +38,7 @@ export default function SignUp() {
     setOpen,
     type,
     message,
+    loading,
   } = useSignUp();
 
   return (
@@ -60,7 +61,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" onSubmit={signUp} sx={{ mt: 3 }}>
+        <Box component="form" sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -179,6 +180,12 @@ export default function SignUp() {
         message={message}
         type={type}
       />
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Container>
   );
 }

@@ -76,7 +76,7 @@ const Navbar = () => {
           variant="h5"
           sx={{ display: { xs: "none", sm: "block" }, fontWeight: "900" }}
         >
-          Logo
+          Recotell
         </Typography>
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
         {user?.role !== "1" && searchFiled}
