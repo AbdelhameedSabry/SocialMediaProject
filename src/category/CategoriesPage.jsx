@@ -14,7 +14,7 @@ export default function CategoriesPage() {
   return (
     <Fragment>
       <Typography variant="h4" mb={2}>
-        Manage Posts
+        Manage Categories
       </Typography>
 
       <CustomDataGrid

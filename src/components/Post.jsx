@@ -12,12 +12,43 @@ import {
   styled,
   Badge,
   Skeleton,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import formatDate from "../helpers/formatDate";
 import NorthIcon from "@mui/icons-material/North";
 import SouthIcon from "@mui/icons-material/South";
+import { useState } from "react";
+import { useUser } from "../context/UserContext";
+import CustomDataGridApi from "../Api/CustomDataGridApi";
 
-const Post = ({ handleOpen, post, savePost, onLike, onDisLike }) => {
+const Post = ({
+  handleOpen,
+  post,
+  savePost,
+  onLike,
+  onDisLike,
+  getAllPosts,
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const { user } = useUser();
+
+  function deleteRow(deleteUrl, id) {
+    CustomDataGridApi.Delete(deleteUrl, id)
+      .then((resp) => {
+        getAllPosts();
+      })
+      .catch((e) => {})
+      .finally(() => {});
+  }
+
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
       right: 10,
@@ -40,13 +71,32 @@ const Post = ({ handleOpen, post, savePost, onLike, onDisLike }) => {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVert />
-          </IconButton>
+          post.user?.id?.toString() === user?.id?.toString() && (
+            <IconButton aria-label="settings" onClick={handleClick}>
+              <MoreVert />
+            </IconButton>
+          )
         }
         title={post.user.firstName + " " + post.user.lastName}
         subheader={formatDate(post.createdAt)}
       />
+      <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        <MenuItem
+          onClick={() => {
+            deleteRow("posts/delete", post.id);
+          }}
+        >
+          Delete
+        </MenuItem>
+      </Menu>
       {post?.image ? (
         <CardMedia
           component="img"

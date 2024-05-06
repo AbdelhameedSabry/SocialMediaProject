@@ -15,17 +15,20 @@ export const UserProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     const image = localStorage.getItem("image");
+    const id = localStorage.getItem("id");
 
-    setUser({ ...user, token, role, image });
+    setUser({ ...user, token, role, image, id });
   }, []);
 
   const saveUserData = (userData) => {
     setUser({
+      id: userData.user.id,
       role: userData.user.roleId.toString(),
       token: userData.token,
       image: userData.user.profilePicture,
     });
 
+    localStorage.setItem("id", userData.user.id);
     localStorage.setItem("token", userData.token);
     localStorage.setItem("role", userData.user.roleId);
     localStorage.setItem("userName", userData.user.username);
@@ -36,6 +39,7 @@ export const UserProvider = ({ children }) => {
   const logOut = () => {
     setUser({});
 
+    localStorage.removeItem("id");
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("userName");

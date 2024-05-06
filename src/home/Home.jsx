@@ -121,6 +121,7 @@ const Home = ({ profileValue }) => {
             savePost={onSavePost}
             onLike={onLike}
             onDisLike={onDisLike}
+            getAllPosts={getAllPosts}
           />
         ))
       )}
